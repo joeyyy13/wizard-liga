@@ -388,6 +388,8 @@ input,textarea,select{font-size:16px}
 .acts .ib,.acts .pr{white-space:nowrap}
 .lh{flex-wrap:wrap}.lh .tt{white-space:nowrap}.acts{margin-left:auto}
 @media(max-width:430px){.lh{padding:12px 10px 6px}.lh .tt{font-size:16px}.acts .ib{padding:7px 8px;font-size:12.5px}.acts{gap:5px}}
+.pl.pl2{transition:background .2s}.pl.pl2.okr{background:rgba(46,160,67,.22)}.pl.pl2.nor{background:rgba(214,69,69,.2)}
+.sum .bm{font-weight:600;color:var(--mut)}.rs.dim{opacity:.25}.sum .ar{color:#3b82f6;margin-left:12px;font-weight:800}
 </style><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script></head>
 <body><main>
 <header><span class="hl"><h1>🧙 Wizard Liga</h1><span id="sync" class="live">live</span></span><span class="seg3" id="seg3"><button class="rp" data-a="setrole" data-r="z" aria-label="Zuschauer"><i>👀</i><span class="rt2"><span class="rin"><small>Rolle</small><b>Zuschauer</b></span></span></button><button class="rp" data-a="setrole" data-r="cl" aria-label="Schreiber Championsleague"><i>✍️🏆</i><span class="rt2"><span class="rin"><small>Rolle</small><b>Championsleague</b></span></span></button><button class="rp" data-a="setrole" data-r="kl" aria-label="Schreiber Kreisliga"><i>✍️⚽</i><span class="rt2"><span class="rin"><small>Rolle</small><b>Kreisliga</b></span></span></button></span></header>
@@ -1270,7 +1272,7 @@ function openSheet(mode,key,edit){
   if(mode==="entry"){
     var ed=cur.edit;
     if(ed==null&&k>=total){toast("Alle Runden gespielt");return}
-    if(ed!=null){var R0=T.rounds[ed];if(!R0){cur=null;return}if(!stashD[key])stashD[key]=draft[key];draft[key]={};T.names.forEach(function(_,i){draft[key]["b"+i]=R0.b[i];draft[key]["t"+i]=R0.t[i];draft[key]["a"+i]=R0.a?R0.a[i]||0:0;draft[key]["s"+i]=1})}
+    if(ed!=null){var R0=T.rounds[ed];if(!R0){cur=null;return}if(!stashD[key])stashD[key]=draft[key];draft[key]={};T.names.forEach(function(_,i){draft[key]["b"+i]=R0.b[i];draft[key]["t"+i]=R0.t[i];draft[key]["a"+i]=R0.a?R0.a[i]||0:0;draft[key]["s"+i]=(R0.t[i]!==0||Math.max(0,R0.b[i]+(R0.a?R0.a[i]||0:0))!==0)?1:0})}
     var r=(ed!=null?ed:k)+1,D=draft[key],rb=T.mode==="j"&&T.rainbow!==false,dl=dealerOf(T,r);
     h='<div class="sh"><b>Runde '+r+(ed!=null?' bearbeiten':'')+' <span class="note">· '+r+' Karten</span></b><button class="x" data-a="close">✕</button></div><div class="note" style="margin-bottom:4px">'+title+'</div>';
     bidOrder(T,r).forEach(function(i,pos){var nm=T.names[i];
@@ -1312,10 +1314,11 @@ function vestNext(key){
 }
 function eff(D,i){return Math.max(0,(D["b"+i]||0)+(D["a"+i]||0))}
 function nxt(D,i,dir){var e=eff(D,i),t=D["t"+i]||0,k=D["k"+i];return dir===0?e:(dir<0?(k==="m"&&t<e?t-1:e-1):(k==="p"&&t>e?t+1:e+1))}
-function paint(key,i){var T=S[key],D=draft[key],mx=rcards(key),e=eff(D,i),t=D["t"+i]||0,d=t-e,g=function(x){return document.getElementById(x)};g("v-b"+i).textContent=D["b"+i]||0;g("v-t"+i).textContent=t;var bo=bidOrder(T,mx),sh=D["s"+i]||bo.slice(bo.indexOf(i)+1).some(function(j){return D["s"+j]});g("v-t"+i).className=(g("v-t"+i).className.replace(/\b(tg|tr)\b/g,"").trim()+" "+(sh?(t===e?"tg":"tr"):"")).trim();g("mi-"+i).disabled=nxt(D,i,-1)<0;g("pl-"+i).disabled=nxt(D,i,1)>tcap(key);g("ok-"+i).disabled=e>mx;g("mi-"+i).querySelector("small").textContent="−"+(D["k"+i]==="m"&&d<0?-d:1);g("pl-"+i).querySelector("small").textContent="+"+(D["k"+i]==="p"&&d>0?d:1)}
+function paint(key,i){var T=S[key],D=draft[key],mx=rcards(key),e=eff(D,i),t=D["t"+i]||0,d=t-e,g=function(x){return document.getElementById(x)};g("v-b"+i).textContent=D["b"+i]||0;g("v-t"+i).textContent=t;var bo=bidOrder(T,mx),sh=D["s"+i]||bo.slice(bo.indexOf(i)+1).some(function(j){return D["s"+j]});g("v-t"+i).className=(g("v-t"+i).className.replace(/\b(tg|tr)\b/g,"").trim()+" "+(sh?(t===e?"tg":"tr"):"")).trim();var rw=g("v-t"+i).closest(".pl");if(rw){rw.classList.toggle("okr",!!D["s"+i]&&t===e);rw.classList.toggle("nor",!!sh&&t!==e)}g("mi-"+i).disabled=nxt(D,i,-1)<0;var ot=othT(key,i);g("pl-"+i).classList.toggle("dim",nxt(D,i,1)+ot>tcap(key));g("ok-"+i).classList.toggle("dim",e+ot>tcap(key));g("mi-"+i).querySelector("small").textContent="−"+(D["k"+i]==="m"&&d<0?-d:1);g("pl-"+i).querySelector("small").textContent="+"+(D["k"+i]==="p"&&d>0?d:1)}
 function adj(key,i,mut){draft[key]["k"+i]="";mut();paint(key,i)}
 var stashD={};
-function tcap(key){var T=S[key],r=rcards(key);return r+((T.mode==="j"&&T.rainbow!==false)?1:0)}
+function tcap(key){return rcards(key)}
+function othT(key,i){var D=draft[key],o=0;S[key].names.forEach(function(_,q){if(q!==i)o+=D["t"+q]||0});return o}
 function rcards(key){return cur&&cur.key===key&&cur.edit!=null?cur.edit+1:S[key].rounds.length+1}
 function bidOrder(T,r){var n=T.names.length,d=(r-1)%n,o=[];for(var j=1;j<=n;j++)o.push((d+j)%n);return o}
 function dealerOf(T,r){var n=T.names.length,d=(r-1)%n;return {d:T.names[d],f:T.names[(d+1)%n],di:d}}
@@ -1408,8 +1411,8 @@ function sumUpdate(){
   var T=S[cur.key],r=rcards(cur.key),D=draft[cur.key],n=T.names.length,s=0,bs=0,oth=0,o=bidOrder(T,r);
   T.names.forEach(function(_,i){s+=D["t"+i]||0;bs+=D["b"+i]||0});
   o.slice(0,n-1).forEach(function(i){oth+=D["b"+i]||0});
-  var okb=bs!==r,jb=T.mode==="j",wo=jb&&T.rainbow!==false,lo=jb?Math.max(0,r-1):r,hi=r+(wo?1:0),okt=s>=lo&&s<=hi,el=$("sum");
-  el.innerHTML="Ansagen: "+bs+" / "+r+(okb?" ✓":" ✗")+"<br>Stiche: "+s+(okt?"":" ✗");
+  var okb=bs!==r,lo=Math.max(0,r-2),hi=r,okt=s>=lo&&s<=hi,el=$("sum");
+  var dd=bs-r,ar=dd?'<span class="ar">'+(dd>0?"⬆":"⬇")+Math.abs(dd)+'</span>':"";el.innerHTML="Ansagen: "+bs+" / "+r+(okb?" ✓":" ✗")+ar+"<br>Stiche: "+s+(okt?"":" ✗");
   el.className="sum "+(okb&&okt?"ok":"bad");$("sv").disabled=!(okb&&okt);
 }
 var wheelRot=0,wheelKey=null,wheelBusy=false,WCOL=["#5b3fd0","#8a4fff","#2b5fd9","#b23ad6","#d9a21e","#1ea896","#d6457a","#3b82f6"];
@@ -1473,7 +1476,7 @@ document.addEventListener("click",function(e){
   if(c&&cur){var D0=draft[cur.key],w=parseInt(el.getAttribute("data-v"),10),v0=(D0[c]||0)===w?0:w;adj(cur.key,parseInt(c.slice(1),10),function(){D0[c]=v0});[].forEach.call(el.parentNode.querySelectorAll(".rbw"),function(x){x.classList.toggle("on",parseInt(x.getAttribute("data-v"),10)===v0)});sumUpdate();return}
   var sd=el.getAttribute("data-s");
   if(sd&&cur){var Dk=draft[cur.key],pi=parseInt(el.getAttribute("data-p"),10),mx=rcards(cur.key),nt=nxt(Dk,pi,sd==="o"?0:sd==="m"?-1:1);
-    if(nt<0||nt>tcap(cur.key))return;
+    if(nt<0||nt+othT(cur.key,pi)>tcap(cur.key)){if(nt>=0)toast("Maximale Stiche überschritten");return}
     Dk["t"+pi]=nt;Dk["k"+pi]=sd==="o"?"":sd;Dk["s"+pi]=1;S[cur.key].names.forEach(function(_,j){paint(cur.key,j)});var vt=$("v-t"+pi);vt.classList.remove("pp");void vt.offsetWidth;vt.classList.add("pp");sumUpdate();return}
   if(a==="mode"){[].forEach.call(el.parentNode.children,function(x){x.classList.remove("on")});el.classList.add("on");var rr=el.closest(".body");rr=rr&&rr.querySelector(".rbrow");if(rr)rr.style.display=el.getAttribute("data-m")==="j"?"block":"none";return}
   if(a==="wheel"){openWheel(el.getAttribute("data-k"));return}
@@ -1483,7 +1486,7 @@ document.addEventListener("click",function(e){
   if(i&&cur){
     var T=S[cur.key],max=rcards(cur.key),D=draft[cur.key],ix2=parseInt(i.slice(1),10);
     var v=Math.max(0,Math.min(i.charAt(0)==="t"?tcap(cur.key):max,(D[i]||0)+parseInt(el.getAttribute("data-d"),10)));
-    if(i.charAt(0)==="t"){var tt=0;T.names.forEach(function(_,q){tt+=(q===ix2?v:(D["t"+q]||0))});D[i]=v;D["k"+ix2]="";D["s"+ix2]=1;T.names.forEach(function(_,j){paint(cur.key,j)})}
+    if(i.charAt(0)==="t"){var tt=0;T.names.forEach(function(_,q){tt+=(q===ix2?v:(D["t"+q]||0))});if(tt>tcap(cur.key)&&v>(D[i]||0)){toast("Maximale Stiche überschritten");return}D[i]=v;D["k"+ix2]="";D["s"+ix2]=1;T.names.forEach(function(_,j){paint(cur.key,j)})}
     else adj(cur.key,ix2,function(){D[i]=v});
     var vb=$("v-"+i);vb.classList.remove("pp");void vb.offsetWidth;vb.classList.add("pp");sumUpdate();return;
   }
