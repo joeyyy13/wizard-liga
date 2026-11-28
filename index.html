@@ -389,7 +389,7 @@ input,textarea,select{font-size:16px}
 .lh{flex-wrap:wrap}.lh .tt{white-space:nowrap}.acts{margin-left:auto}
 @media(max-width:430px){.lh{padding:12px 10px 6px}.lh .tt{font-size:16px}.acts .ib{padding:7px 8px;font-size:12.5px}.acts{gap:5px}}
 .pl.pl2{transition:background .2s}.pl.pl2.okr{background:rgba(46,160,67,.22)}.pl.pl2.nor{background:rgba(214,69,69,.2)}
-.sum .bm{font-weight:600;color:var(--mut)}.rs.dim{opacity:.25}.sum .ar{color:#3b82f6;margin-left:12px;font-weight:800}
+.sum .bm{font-weight:600;color:var(--mut)}.rs.dim{opacity:.25}.sum .ok{color:var(--up)}.sum .bad{color:var(--dn)}.sum .ar{color:#3b82f6;margin-left:12px;font-weight:800}
 </style><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script></head>
 <body><main>
 <header><span class="hl"><h1>🧙 Wizard Liga</h1><span id="sync" class="live">live</span></span><span class="seg3" id="seg3"><button class="rp" data-a="setrole" data-r="z" aria-label="Zuschauer"><i>👀</i><span class="rt2"><span class="rin"><small>Rolle</small><b>Zuschauer</b></span></span></button><button class="rp" data-a="setrole" data-r="cl" aria-label="Schreiber Championsleague"><i>✍️🏆</i><span class="rt2"><span class="rin"><small>Rolle</small><b>Championsleague</b></span></span></button><button class="rp" data-a="setrole" data-r="kl" aria-label="Schreiber Kreisliga"><i>✍️⚽</i><span class="rt2"><span class="rin"><small>Rolle</small><b>Kreisliga</b></span></span></button></span></header>
@@ -1412,8 +1412,8 @@ function sumUpdate(){
   T.names.forEach(function(_,i){s+=D["t"+i]||0;bs+=D["b"+i]||0});
   o.slice(0,n-1).forEach(function(i){oth+=D["b"+i]||0});
   var okb=bs!==r,lo=Math.max(0,r-2),hi=r,okt=s>=lo&&s<=hi,el=$("sum");
-  var dd=bs-r,ar=dd?'<span class="ar">'+(dd>0?"⬆":"⬇")+Math.abs(dd)+'</span>':"";el.innerHTML="Ansagen: "+bs+" / "+r+(okb?" ✓":" ✗")+ar+"<br>Stiche: "+s+(okt?"":" ✗");
-  el.className="sum "+(okb&&okt?"ok":"bad");$("sv").disabled=!(okb&&okt);
+  var dd=bs-r,ar=dd?'<span class="ar">'+(dd>0?"⬆":"⬇")+Math.abs(dd)+'</span>':"";el.innerHTML='<span class="'+(okb?"ok":"bad")+'">Ansagen: '+bs+" / "+r+(okb?" ✓":" ✗")+'</span>'+ar+'<br><span class="'+(okt?"ok":"bad")+'">Stiche: '+s+(okt?" ✓":" ✗")+'</span>';
+  el.className="sum";$("sv").disabled=!(okb&&okt);
 }
 var wheelRot=0,wheelKey=null,wheelBusy=false,WCOL=["#5b3fd0","#8a4fff","#2b5fd9","#b23ad6","#d9a21e","#1ea896","#d6457a","#3b82f6"];
 function wheelSvg(names){
