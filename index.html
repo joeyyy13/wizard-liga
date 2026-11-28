@@ -205,10 +205,11 @@ body[data-role="cl"] #lg-kl .acts .pr,body[data-role="kl"] #lg-cl .acts .pr,body
 .t-d.v2 .hero{animation:bob 2.5s infinite ease-in-out}
 #sheet{box-shadow:none}#ov.on #sheet{box-shadow:0 -10px 40px rgba(0,0,0,.3)}
 #banner{box-shadow:none}#banner.on{box-shadow:0 10px 30px rgba(0,0,0,.35)}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
-.chip{padding:9px 14px;border-radius:99px;border:1px solid var(--bd);background:transparent;color:var(--fg);font-weight:700;font-size:15px;transition:transform .12s,background .2s}
-.chip.on{background:var(--c);color:#161616;border-color:transparent;transform:scale(1.05)}
+.chips{display:flex;flex-flow:row wrap;align-items:center;gap:8px;margin:8px 0}
+.chip{flex:0 0 auto;width:auto;white-space:nowrap;display:inline-flex;align-items:center;padding:9px 14px;border-radius:99px;border:1px solid var(--bd);background:transparent;color:var(--fg);font-weight:500;font-size:15px;line-height:1.2;transition:transform .12s,background .2s}
+.chip.on{background:var(--c);color:#161616;border-color:transparent;transform:none;font-weight:500;padding-left:9px}
 .chip:active{transform:scale(.93)}
+.chip .cn{display:inline-flex;align-items:center;justify-content:center;flex:none;min-width:17px;height:17px;margin-right:6px;border-radius:50%;background:#161616;color:#fff;font-style:normal;font-size:11px;line-height:1;font-weight:700}
 .addrow{display:flex;gap:8px;margin:6px 0 10px}
 .nn{flex:1;min-width:0;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:9px}
 .sc{position:relative;width:min(56vw,250px);margin:0 auto 6px;z-index:2;perspective:700px}
@@ -383,11 +384,15 @@ input,textarea,select{font-size:16px}
 .pnh{font-size:11.5px;font-weight:800;color:var(--mut);margin:16px 0 8px;letter-spacing:.06em;text-transform:uppercase}
 .pnr{margin-bottom:8px}.pnl{display:block;font-size:13px;font-weight:700;margin-bottom:5px}
 .pc .big{margin-top:12px}.pc .note{margin-top:8px}
+.sum .fb{color:var(--dn);font-weight:800}
+.acts .ib,.acts .pr{white-space:nowrap}
+.lh{flex-wrap:wrap}.lh .tt{white-space:nowrap}.acts{margin-left:auto}
+@media(max-width:430px){.lh{padding:12px 10px 6px}.lh .tt{font-size:16px}.acts .ib{padding:7px 8px;font-size:12.5px}.acts{gap:5px}}
 </style><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script></head>
 <body><main>
 <header><span class="hl"><h1>🧙 Wizard Liga</h1><span id="sync" class="live">live</span></span><span class="seg3" id="seg3"><button class="rp" data-a="setrole" data-r="z" aria-label="Zuschauer"><i>👀</i><span class="rt2"><span class="rin"><small>Rolle</small><b>Zuschauer</b></span></span></button><button class="rp" data-a="setrole" data-r="cl" aria-label="Schreiber Championsleague"><i>✍️🏆</i><span class="rt2"><span class="rin"><small>Rolle</small><b>Championsleague</b></span></span></button><button class="rp" data-a="setrole" data-r="kl" aria-label="Schreiber Kreisliga"><i>✍️⚽</i><span class="rt2"><span class="rin"><small>Rolle</small><b>Kreisliga</b></span></span></button></span></header>
-<section class="lg cl" id="lg-cl"><div class="lh"><div><div class="tt">🏆 Championsleague</div><div class="sub" id="sub-cl"></div></div><div class="acts"><button class="ib" data-a="hist" data-k="cl">Verlauf</button><button class="ib pr" data-a="entry" data-k="cl">+ Runde</button></div></div><div class="body" id="body-cl"></div></section>
-<section class="lg kl" id="lg-kl"><div class="lh"><div><div class="tt">⚽ Kreisliga</div><div class="sub" id="sub-kl"></div></div><div class="acts"><button class="ib" data-a="hist" data-k="kl">Verlauf</button><button class="ib pr" data-a="entry" data-k="kl">+ Runde</button></div></div><div class="body" id="body-kl"></div></section><div id="promo"></div>
+<section class="lg cl" id="lg-cl"><div class="lh"><div><div class="tt">🏆 Championsleague</div><div class="sub" id="sub-cl"></div></div><div class="acts"><button class="ib" data-a="stat" data-k="cl" aria-label="Statistik" title="Statistik">📊</button><button class="ib" data-a="hist" data-k="cl">Verlauf</button><button class="ib pr" data-a="entry" data-k="cl">+ Runde</button></div></div><div class="body" id="body-cl"></div></section>
+<section class="lg kl" id="lg-kl"><div class="lh"><div><div class="tt">⚽ Kreisliga</div><div class="sub" id="sub-kl"></div></div><div class="acts"><button class="ib" data-a="stat" data-k="kl" aria-label="Statistik" title="Statistik">📊</button><button class="ib" data-a="hist" data-k="kl">Verlauf</button><button class="ib pr" data-a="entry" data-k="kl">+ Runde</button></div></div><div class="body" id="body-kl"></div></section><div id="promo"></div>
 </main>
 <div id="ov"><div class="bk" id="bk"></div><div id="sheet"></div></div>
 <div id="wheel"></div><div id="toast"></div><div id="banner"></div><div id="cele"></div>
@@ -1029,9 +1034,32 @@ function nr(T){return Math.floor(60/T.names.length)+(T.mode==="j"?1:0)}
 function rbl(v){return v===1?"🌈 +1":v===-1?"🌈 −1":"🌈 aus"}
 function totals(T,k){return T.names.map(function(_,i){var s=0;for(var r=0;r<k;r++)s+=rp(T.rounds[r],i);return s})}
 function ranks(t){return t.map(function(x){return 1+t.filter(function(y){return y>x}).length})}
+var SYNC_URL=""; /* HIER die Firebase-Realtime-Database-URL eintragen, z.B. "https://wizard-liga-default-rtdb.europe-west1.firebasedatabase.app" */
+var syncBase=(SYNC_URL||"").replace(/\/+$/,""),pushT=0;
+function setSync(ok,txt){var e=$("sync");if(!e)return;e.classList.add("live");e.textContent="live"}
+function pushRemote(){
+  if(!syncBase)return;clearTimeout(pushT);
+  pushT=setTimeout(function(){
+    fetch(syncBase+"/wizard.json",{method:"PUT",body:JSON.stringify({json:JSON.stringify(S),ts:S.ts||0}),keepalive:true})
+      .then(function(r){setSync(r.ok)}).catch(function(){setSync(false)});
+  },250);
+}
+function pullRemote(){
+  if(!syncBase||document.hidden)return;
+  fetch(syncBase+"/wizard.json?_="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+    setSync(true);
+    if(!d||!d.json){if(S.cl.names.length||S.kl.names.length){S.ts=S.ts||Date.now();pushRemote()}return}
+    var rs=JSON.parse(d.json);if(!(rs&&rs.cl&&rs.kl))return;
+    var rt=rs.ts||0,lt=S.ts||0;
+    if(rt>lt){S=rs;try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}KEYS.forEach(update)}
+    else if(rt<lt)pushRemote();
+  }).catch(function(){setSync(false)});
+}
 function save(){
+  S.ts=Date.now();
   try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}
   if(ref)ref.set({json:JSON.stringify(S)}).catch(function(){});
+  else pushRemote();
 }
 function toast(t){var el=$("toast");el.textContent=t;el.classList.add("on");setTimeout(function(){el.classList.remove("on")},1900)}
 function countTo(el,a,b){
@@ -1041,30 +1069,36 @@ function countTo(el,a,b){
 }
 var PRESETS=["Ju","Joey","Hadinger","Felix","Paul Pro","Simon","Saskia","Michel","Folki","Ulli"],sel={cl:[],kl:[]},cust=[];
 try{localStorage.removeItem("wizard-names")}catch(e){}
-function chipHtml(key,nm){return '<button class="chip'+(sel[key].indexOf(nm)>=0?" on":"")+'" data-a="chip" data-k="'+key+'" data-n="'+esc(nm)+'">'+esc(nm)+'</button>'}
-function setupCount(key){var bd=$("body-"+key),c=sel[key].length,bt=bd.querySelector(".big"),e=bd.querySelector(".cnt");if(bt){bt.textContent="Tisch starten ("+c+" Spieler)";bt.disabled=c<3||c>6}if(e)e.textContent=c+" ausgewählt"}
+function chipList(key){var all=PRESETS.concat(cust);return sel[key].filter(function(x){return all.indexOf(x)>=0}).concat(all.filter(function(x){return sel[key].indexOf(x)<0}))}
+function renderChips(key){var c=$("body-"+key).querySelector(".chips");if(c)c.innerHTML=chipList(key).map(function(x){return chipHtml(key,x)}).join("")}
+function chipHtml(key,nm){return '<button class="chip'+(sel[key].indexOf(nm)>=0?" on":"")+'" data-a="chip" data-k="'+key+'" data-n="'+esc(nm)+'">'+(sel[key].indexOf(nm)>=0?'<i class="cn">'+(sel[key].indexOf(nm)+1)+'</i>':'')+esc(nm)+'</button>'}
+function setupCount(key){var bd=$("body-"+key),c=sel[key].length,bt=bd.querySelector(".big"),e=bd.querySelector(".cnt");if(bt){bt.textContent="Tisch starten ("+c+" Spieler)";bt.disabled=c<3||c>6}if(e)e.textContent=c+" ausgewählt";[].forEach.call(bd.querySelectorAll(".chip"),function(ch){var ix=sel[key].indexOf(ch.getAttribute("data-n")),b=ch.querySelector(".cn");if(ix<0){if(b)b.remove();return}if(!b){b=document.createElement("i");b.className="cn";ch.insertBefore(b,ch.firstChild)}b.textContent=ix+1})}
 function addName(key,inp){
   var nm=inp.value.trim().replace(/\s+/g," ");if(!nm)return;
   var f=PRESETS.concat(cust).filter(function(x){return x.toLowerCase()===nm.toLowerCase()})[0];
   if(f)nm=f;else cust.push(nm);
   if(sel[key].indexOf(nm)<0){if(sel[key].length>=6){toast("Maximal 6 Spieler");return}sel[key].push(nm)}
   inp.value="";
-  $("body-"+key).querySelector(".chips").innerHTML=PRESETS.concat(cust).map(function(x){return chipHtml(key,x)}).join("");
+  renderChips(key);
   setupCount(key);
 }
-function setEntryBtn(key,over){
+function setEntryBtn(key,over,k){
   var b=document.querySelector('#lg-'+key+' .acts .pr');if(!b)return;
   var want=over?"newgame":"entry";
-  if(b.getAttribute("data-a")===want)return;
-  b.setAttribute("data-a",want);b.textContent=over?"Neues Spiel":"+ Runde";ngArm[key]=false;
+  if(b.getAttribute("data-a")!==want){b.setAttribute("data-a",want);b.classList.remove("dng");ngArm[key]=false;b.textContent=over?"Neues Spiel":"+ Runde"}
+  if(want==="entry"){var t="+ Runde"+(k==null?"":" "+(k+1));if(b.textContent!==t)b.textContent=t}
 }
 var ngArm={cl:false,kl:false};
-function openPlayer(key,i){
+function openPlayer(key,i,v){
+  v=v||"pts";
   var T=S[key],nm=T.names[i],k=T.rounds.length,tot=totals(T,k),rk=ranks(tot);
   var title=(key==="cl"?"🏆 Championsleague":"⚽ Kreisliga");
   cur=null;
   var h='<div class="sh"><b>'+esc(nm)+'</b><button class="x" data-a="close">✕</button></div><div class="note" style="margin-bottom:6px">'+title+(k?' · Platz '+rk[i]+' · '+tot[i]+' Punkte':'')+'</div>';
-  if(k){
+  if(k)h+='<div class="seg vtabs">'+[["pts","Punkte"],["stats","Statistik"],["chart","Diagramm"]].map(function(t){return '<button class="sg'+(v===t[0]?" on":"")+'" data-a="pvw" data-k="'+key+'" data-pi="'+i+'" data-v="'+t[0]+'">'+t[1]+'</button>'}).join("")+'</div>';
+  if(k&&v==="stats")h+=statsHtml(T,i);
+  else if(k&&v==="chart")h+=chartHtml(T,i);
+  else if(k){
     h+='<div class="scroll"><table><tr><th>Rd</th><th>Ansage</th><th>Stiche</th><th>Punkte</th><th>Gesamt</th></tr>';
     var run=0;
     T.rounds.forEach(function(R,ri){
@@ -1081,7 +1115,7 @@ function update(key){
     setEntryBtn(key,false);shown[key]=null;body.className="body setup";body.style.height="";$("sub-"+key).textContent="Tisch anlegen";
     if(T.next&&T.next.length&&nextApplied[key]!==T.next.join("|")){nextApplied[key]=T.next.join("|");sel[key]=T.next.slice();T.next.forEach(function(nm){if(PRESETS.indexOf(nm)<0&&cust.indexOf(nm)<0)cust.push(nm)})}
     if(role!==key){body.innerHTML='<div class="note">Dieser Tisch wurde noch nicht angelegt.</div><button class="ib pr" data-a="setrole" data-r="'+key+'" style="margin-top:8px">✍️ Als Schreiber anlegen</button>';return}
-    body.innerHTML='<div class="note">Spieler antippen (3 bis 6) · <span class="cnt"></span></div><div class="chips">'+PRESETS.concat(cust).map(function(x){return chipHtml(key,x)}).join("")+'</div><div class="addrow"><input class="nn" maxlength="16" placeholder="Anderer Name"><button class="ib" data-a="addn" data-k="'+key+'">+ Hinzufügen</button></div><button class="ib wbtn" data-a="wheel" data-k="'+key+'"><span class="wico"></span>Glücksrad: Schreiber auslosen</button><div class="note">Spielvariante</div><div class="seg"><button class="sg'+(key==="cl"?"":" on")+'" data-a="mode" data-m="k">Klassisch</button><button class="sg'+(key==="cl"?" on":"")+'" data-a="mode" data-m="j">Jubiläum</button></div><div class="rbrow" style="display:'+(key==="cl"?"block":"none")+'"><button class="ib rbt on" data-a="rbt">🌈 Regenbogen: an</button></div><div class="err"></div><button class="big">Tisch starten</button>';
+    body.innerHTML='<div class="note">Spieler antippen (3 bis 6) · <span class="cnt"></span></div><div class="chips">'+chipList(key).map(function(x){return chipHtml(key,x)}).join("")+'</div><div class="addrow"><input class="nn" maxlength="16" placeholder="Anderer Name"><button class="ib" data-a="addn" data-k="'+key+'">+ Hinzufügen</button></div><button class="ib wbtn" data-a="wheel" data-k="'+key+'"><span class="wico"></span>Glücksrad: Schreiber auslosen</button><div class="note">Spielvariante</div><div class="seg"><button class="sg'+(key==="cl"?"":" on")+'" data-a="mode" data-m="k">Klassisch</button><button class="sg'+(key==="cl"?" on":"")+'" data-a="mode" data-m="j">Jubiläum</button></div><div class="rbrow" style="display:'+(key==="cl"?"block":"none")+'"><button class="ib rbt on" data-a="rbt">🌈 Regenbogen: an</button></div><div class="err"></div><button class="big">Tisch starten</button>';
     setupCount(key);
     body.querySelector(".big").onclick=function(){
       if(role!==key){toast("Nur der Schreiber dieses Tisches kann das");return}
@@ -1097,7 +1131,7 @@ function update(key){
     body.innerHTML=T.names.map(function(nm,i){return '<div class="r" style="animation-delay:'+(i*70)+'ms"><span class="rk"></span><span class="mv"></span><span class="gb"></span><span class="nm"><span class="pn">'+esc(nm)+'</span><em class="bg" hidden></em></span><span class="pt">0</span></div>'}).join("");
     shown[key]={sig:sig,rk:null,pts:T.names.map(function(){return 0}),rows:[].slice.call(body.children)};
   }
-  var sh=shown[key],k=T.rounds.length,total=nr(T),tot=totals(T,k),rk=ranks(tot);setEntryBtn(key,k>=total);
+  var sh=shown[key],k=T.rounds.length,total=nr(T),tot=totals(T,k),rk=ranks(tot);setEntryBtn(key,k>=total,k);
   var prev=k>0?ranks(totals(T,k-1)):null;
   var order=T.names.map(function(_,i){return i}).sort(function(a,b){return tot[b]-tot[a]||a-b});
   var pos=[];order.forEach(function(i,j){pos[i]=j});
@@ -1132,7 +1166,7 @@ function update(key){
   if(k>=total&&pk!==undefined&&pk<total)celebrate(key,T,rk);
 }
 function sheet(html){$("sheet").innerHTML='<div class="grab"></div>'+html}
-var hv={cl:"block",kl:"block"};
+var hv={cl:"block",kl:"block"},sv={cl:"chart",kl:"chart"};
 function blockModel(T){
   var n=T.names.length,N=nr(T),R=Math.max(20,N+1),OB=[1e9,1e9,1e9,16,13,11],b=[],c,r,run=[0,0,0,0,0,0],rows=[];
   for(c=0;c<6;c++)b[c]=c<n?Math.max(OB[c],N+2):OB[c];
@@ -1216,7 +1250,7 @@ function saveBlock(key){
 function openCell(key,ri,ci){
   var T=S[key],R=T.rounds[ri];if(!R||role!==key)return;
   var e=Math.max(0,R.b[ci]+(R.a?R.a[ci]||0:0)),oth=0;R.t.forEach(function(x,j){if(j!==ci)oth+=x});
-  cur={mode:"cell",key:key,ri:ri,ci:ci,v:R.t[ci],v0:R.t[ci],e:e,mx:Math.max(R.t[ci],ri+1-oth),edit:null};
+  cur={mode:"cell",key:key,ri:ri,ci:ci,v:R.t[ci],v0:R.t[ci],e:e,mx:Math.max(R.t[ci],(ri+1)+((T.mode==="j"&&T.rainbow!==false)?1:0)),edit:null};
   var h='<div class="sh"><b>Stiche ändern</b><button class="x" data-a="cback">✕</button></div><div class="note" style="margin-bottom:6px">'+(key==="cl"?"🏆 Championsleague":"⚽ Kreisliga")+'</div>'
   +'<div class="ce"><div class="cen"><b>'+esc(T.names[ci])+'</b> · Runde '+(ri+1)+' · Ansage '+e+'</div><div class="st"><button data-a="cst" data-d="-1" id="cmn">−</button><b id="cv"></b><button data-a="cst" data-d="1" id="cpl">+</button></div><div class="cep" id="cp"></div></div>'
   +'<button class="big" id="csv" data-a="csave">Stiche speichern</button><button class="ib" data-a="cback" style="width:100%;margin-top:8px">Abbrechen</button>';
@@ -1228,7 +1262,7 @@ function cellPaint(){
   var el=$("cp");el.className="cep "+(p>=0?"p":"m");el.textContent=sg(p)+" Punkte"+(c.v!==c.v0?" (vorher "+sg(p0)+")":"");
 }
 function openSheet(mode,key,edit){
-  if(mode!=="hist"&&role!==key){toast("Nur der Schreiber dieses Tisches kann das");return}
+  if(mode!=="hist"&&mode!=="stat"&&role!==key){toast("Nur der Schreiber dieses Tisches kann das");return}
   cur={mode:mode,key:key,edit:(edit==null?null:edit)};resetArm=false;var T=S[key],n=T.names.length;
   var title=(key==="cl"?"🏆 Championsleague":"⚽ Kreisliga");
   if(!n){toast("Bitte erst Spieler anlegen");return}
@@ -1239,16 +1273,16 @@ function openSheet(mode,key,edit){
     if(ed!=null){var R0=T.rounds[ed];if(!R0){cur=null;return}if(!stashD[key])stashD[key]=draft[key];draft[key]={};T.names.forEach(function(_,i){draft[key]["b"+i]=R0.b[i];draft[key]["t"+i]=R0.t[i];draft[key]["a"+i]=R0.a?R0.a[i]||0:0;draft[key]["s"+i]=1})}
     var r=(ed!=null?ed:k)+1,D=draft[key],rb=T.mode==="j"&&T.rainbow!==false,dl=dealerOf(T,r);
     h='<div class="sh"><b>Runde '+r+(ed!=null?' bearbeiten':'')+' <span class="note">· '+r+' Karten</span></b><button class="x" data-a="close">✕</button></div><div class="note" style="margin-bottom:4px">'+title+'</div>';
-    T.names.forEach(function(nm,i){
+    bidOrder(T,r).forEach(function(i,pos){var nm=T.names[i];
       var stp=function(id){return '<div class="st"><button data-i="'+id+'" data-d="-1">−</button><b id="v-'+id+'">'+(D[id]||0)+'</b><button data-i="'+id+'" data-d="1">+</button></div>'};
-      h+='<div class="pl pl2'+(rb?"":" bn")+'" style="animation-delay:'+(i*50)+'ms"><div class="pl2h"><span class="nm">'+(i===dl.di?'🃏 ':'')+esc(nm)+(rb?'<br><button class="rbw'+((D["a"+i]||0)===1?" on":"")+'" data-c="a'+i+'" data-v="1">🌈 +1</button><button class="rbw'+((D["a"+i]||0)===-1?" on":"")+'" data-c="a'+i+'" data-v="-1">🌈 −1</button>':"")+'</span><span class="rl">Ansage</span>'+stp("b"+i)+'</div><div class="pl2r"><span class="rl">Stiche</span>'+stp("t"+i)+'<span class="rsg"><button class="rs" id="ok-'+i+'" data-s="o" data-p="'+i+'">✅</button><button class="rs" id="mi-'+i+'" data-s="m" data-p="'+i+'">❌<small>−1</small></button><button class="rs" id="pl-'+i+'" data-s="p" data-p="'+i+'">❌<small>+1</small></button></span></div></div>';
+      h+='<div class="pl pl2'+(rb?"":" bn")+'" style="animation-delay:'+(pos*50)+'ms"><div class="pl2h"><span class="nm">'+(i===dl.di?'🃏 ':'')+esc(nm)+(rb?'<br><button class="rbw'+((D["a"+i]||0)===1?" on":"")+'" data-c="a'+i+'" data-v="1">🌈 +1</button><button class="rbw'+((D["a"+i]||0)===-1?" on":"")+'" data-c="a'+i+'" data-v="-1">🌈 −1</button>':"")+'</span><span class="rl">Ansage</span>'+stp("b"+i)+'</div><div class="pl2r"><span class="rl">Stiche</span>'+stp("t"+i)+'<span class="rsg"><button class="rs" id="ok-'+i+'" data-s="o" data-p="'+i+'">✅</button><button class="rs" id="mi-'+i+'" data-s="m" data-p="'+i+'">❌<small>−1</small></button><button class="rs" id="pl-'+i+'" data-s="p" data-p="'+i+'">❌<small>+1</small></button></span></div></div>';
     });
     h+='<div class="sum" id="sum"></div><button class="big" id="sv" data-a="save">'+(ed!=null?'Änderung speichern':'Runde speichern')+'</button>';
     sheet(h);T.names.forEach(function(_,i){paint(key,i)});sumUpdate();
   }else{
-    var vw=hv[key]||"block",wr=role===key;
-    var TABS=[["block","Block"],["list","Liste"],["chart","Diagramm"],["stats","Statistik"]],NOTE={block:"Punkte pro Runde, danach Ansage",list:"Punkte (Ansage/Stiche)",chart:"Gesamtpunkte nach jeder Runde",stats:"Auswertung pro Spieler"};
-    h='<div class="sh"><b>Verlauf</b><span class="shr">'+(T.rounds.length>=nr(T)?'<button class="x" data-a="png" data-k="'+key+'" aria-label="Block als Bild speichern">⬇️</button>':"")+'<button class="x" data-a="close">✕</button></span></div><div class="seg vtabs">'+TABS.map(function(t){return '<button class="sg'+(vw===t[0]?" on":"")+'" data-a="vw" data-v="'+t[0]+'" data-k="'+key+'">'+t[1]+'</button>'}).join("")+'</div><div class="note" style="margin:6px 0">'+title+' · '+NOTE[vw]+(wr&&k&&vw==="block"?" · Feld: Stiche ändern, Nummer: ganze Runde":wr&&k&&vw==="list"?" · Rundennummer antippen zum Ändern":"")+'</div>';
+    var st=mode==="stat",hvk=hv[key]==="list"?"list":"block",vw=st?(sv[key]||"chart"):hvk,wr=role===key&&!st;
+    var TABS=st?[["chart","Diagramm"],["stats","Statistik"]]:[["block","Block"],["list","Liste"]],NOTE={block:"Punkte pro Runde, danach Ansage",list:"Punkte (Ansage/Stiche)",chart:"Gesamtpunkte nach jeder Runde",stats:"Auswertung pro Spieler"};
+    h='<div class="sh"><b>'+(st?'Statistik':'Verlauf')+'</b><span class="shr">'+(!st&&T.rounds.length>=nr(T)?'<button class="x" data-a="png" data-k="'+key+'" aria-label="Block als Bild speichern">⬇️</button>':"")+'<button class="x" data-a="close">✕</button></span></div><div class="seg vtabs">'+TABS.map(function(t){return '<button class="sg'+(vw===t[0]?" on":"")+'" data-a="'+(st?"svw":"vw")+'" data-v="'+t[0]+'" data-k="'+key+'">'+t[1]+'</button>'}).join("")+'</div><div class="note" style="margin:6px 0">'+title+' · '+NOTE[vw]+(wr&&k&&vw==="block"?" · Feld: Stiche ändern, Nummer: ganze Runde":wr&&k&&vw==="list"?" · Rundennummer antippen zum Ändern":"")+'</div>';
     if(vw==="block")h+=blockHtml(T,wr?key:null);
     else if(vw==="chart")h+=chartHtml(T);
     else if(vw==="stats")h+=statsHtml(T);
@@ -1257,7 +1291,7 @@ function openSheet(mode,key,edit){
       T.rounds.forEach(function(R,ri){h+='<tr><td>'+(wr?'<button class="rdb" data-a="edr" data-k="'+key+'" data-ri="'+ri+'">'+(ri+1)+'</button>':(ri+1))+'</td>'+T.names.map(function(_,i){var p=rp(R,i),ea=R.a?R.a[i]||0:0;return '<td class="'+(p>=0?"p":"m")+'">'+(p>0?"+":"")+p+' <span class="note">('+Math.max(0,R.b[i]+ea)+(ea?"🌈":"")+"/"+R.t[i]+')</span></td>'}).join("")+'</tr>'});
       h+='</table></div>';
     }else h+='<div class="note">Noch keine Runde gespielt.</div>';
-    if(role===key)h+='<div class="row2"><button class="ib" data-a="undo"'+(k?"":" disabled")+'>◀ Runde zurück</button><button class="ib" data-a="redo"'+((T.redo&&T.redo.length)?"":" disabled")+'>Runde vor ▶</button></div><div class="row2" style="margin-top:8px"><button class="ib" data-a="reset" id="rs">Tisch zurücksetzen</button></div>';
+    if(role===key&&!st)h+='<div class="row2"><button class="ib" data-a="undo"'+(k?"":" disabled")+'>◀ Runde zurück</button><button class="ib" data-a="redo"'+((T.redo&&T.redo.length)?"":" disabled")+'>Runde vor ▶</button></div><div class="row2" style="margin-top:8px"><button class="ib" data-a="reset" id="rs">Tisch zurücksetzen</button></div>';
     sheet(h);
   }
   $("sheet").className=key;$("ov").classList.add("on");
@@ -1278,23 +1312,25 @@ function vestNext(key){
 }
 function eff(D,i){return Math.max(0,(D["b"+i]||0)+(D["a"+i]||0))}
 function nxt(D,i,dir){var e=eff(D,i),t=D["t"+i]||0,k=D["k"+i];return dir===0?e:(dir<0?(k==="m"&&t<e?t-1:e-1):(k==="p"&&t>e?t+1:e+1))}
-function paint(key,i){var T=S[key],D=draft[key],mx=rcards(key),e=eff(D,i),t=D["t"+i]||0,d=t-e,g=function(x){return document.getElementById(x)};g("v-b"+i).textContent=D["b"+i]||0;g("v-t"+i).textContent=t;g("v-t"+i).className=(g("v-t"+i).className.replace(/\b(tg|tr)\b/g,"").trim()+" "+(D["s"+i]?(t===e?"tg":"tr"):"")).trim();g("mi-"+i).disabled=nxt(D,i,-1)<0;g("pl-"+i).disabled=nxt(D,i,1)>mx;g("ok-"+i).disabled=e>mx;g("mi-"+i).querySelector("small").textContent="−"+(D["k"+i]==="m"&&d<0?-d:1);g("pl-"+i).querySelector("small").textContent="+"+(D["k"+i]==="p"&&d>0?d:1)}
+function paint(key,i){var T=S[key],D=draft[key],mx=rcards(key),e=eff(D,i),t=D["t"+i]||0,d=t-e,g=function(x){return document.getElementById(x)};g("v-b"+i).textContent=D["b"+i]||0;g("v-t"+i).textContent=t;var bo=bidOrder(T,mx),sh=D["s"+i]||bo.slice(bo.indexOf(i)+1).some(function(j){return D["s"+j]});g("v-t"+i).className=(g("v-t"+i).className.replace(/\b(tg|tr)\b/g,"").trim()+" "+(sh?(t===e?"tg":"tr"):"")).trim();g("mi-"+i).disabled=nxt(D,i,-1)<0;g("pl-"+i).disabled=nxt(D,i,1)>tcap(key);g("ok-"+i).disabled=e>mx;g("mi-"+i).querySelector("small").textContent="−"+(D["k"+i]==="m"&&d<0?-d:1);g("pl-"+i).querySelector("small").textContent="+"+(D["k"+i]==="p"&&d>0?d:1)}
 function adj(key,i,mut){draft[key]["k"+i]="";mut();paint(key,i)}
 var stashD={};
+function tcap(key){var T=S[key],r=rcards(key);return r+((T.mode==="j"&&T.rainbow!==false)?1:0)}
 function rcards(key){return cur&&cur.key===key&&cur.edit!=null?cur.edit+1:S[key].rounds.length+1}
+function bidOrder(T,r){var n=T.names.length,d=(r-1)%n,o=[];for(var j=1;j<=n;j++)o.push((d+j)%n);return o}
 function dealerOf(T,r){var n=T.names.length,d=(r-1)%n;return {d:T.names[d],f:T.names[(d+1)%n],di:d}}
 var PCOL=["#d9a21e","#2b5fd9","#d6457a","#1ea896","#8a4fff","#e8743b"];
-function chartHtml(T){
+function chartHtml(T,only){
   var k=T.rounds.length;if(!k)return '<div class="note">Noch keine Runde gespielt.</div>';
   var cum=T.names.map(function(_,i){var a=[0],s=0;for(var r=0;r<k;r++){s+=rp(T.rounds[r],i);a.push(s)}return a});
-  var mn=0,mx=0;cum.forEach(function(a){a.forEach(function(v){if(v<mn)mn=v;if(v>mx)mx=v})});
+  var mn=0,mx=0;(only!=null?[cum[only]]:cum).forEach(function(a){a.forEach(function(v){if(v<mn)mn=v;if(v>mx)mx=v})});
   var span=Math.max(10,mx-mn),step=span>400?100:span>200?50:span>100?20:10,lo=Math.floor(mn/step)*step,hi=Math.ceil(mx/step)*step;if(hi===lo)hi=lo+step;
   var W=340,H=240,ml=32,mr=40,mt=14,mb=26,pw=W-ml-mr,ph=H-mt-mb;
   var X=function(r){return ml+pw*r/k},Y=function(v){return mt+ph*(1-(v-lo)/(hi-lo))},g='',v,r,y;
   for(v=lo;v<=hi;v+=step){y=Y(v).toFixed(1);g+='<line x1="'+ml+'" x2="'+(W-mr)+'" y1="'+y+'" y2="'+y+'" stroke="currentColor" stroke-opacity="'+(v===0?'.4':'.13')+'"'+(v===0?'':' stroke-dasharray="3 4"')+'/><text x="'+(ml-6)+'" y="'+(+y+3)+'" text-anchor="end" font-size="9" style="fill:var(--mut)">'+v+'</text>'}
   var tk=Math.max(1,Math.ceil(k/8));
   for(r=0;r<=k;r+=tk)g+='<text x="'+X(r).toFixed(1)+'" y="'+(H-9)+'" text-anchor="middle" font-size="9" style="fill:var(--mut)">'+r+'</text>';
-  var ord=cum.map(function(_,i){return i}).sort(function(a,b){return cum[b][k]-cum[a][k]||a-b});
+  var ord=cum.map(function(_,i){return i}).sort(function(a,b){return cum[b][k]-cum[a][k]||a-b});if(only!=null)ord=[only];
   var ly=[],last=-99;ord.forEach(function(i){var yy=Y(cum[i][k]);if(yy<last+11)yy=last+11;ly[i]=yy;last=yy});
   ord.slice().reverse().forEach(function(i){
     var col=PCOL[i%6],a=cum[i],pl=a.map(function(v,r){return X(r).toFixed(1)+","+Y(v).toFixed(1)}).join(" "),inner='';
@@ -1305,9 +1341,9 @@ function chartHtml(T){
     g+='<g class="ln l'+(i%6)+'">'+inner+'</g>';
   });
   var lg=ord.map(function(i,j){return '<button class="lgi" data-a="chl" data-h="'+(i%6)+'"><i style="background:'+PCOL[i%6]+'"></i>'+esc(T.names[i])+' <b>'+cum[i][k]+'</b></button>'}).join("");
-  return '<div class="chart"><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Punkteverlauf" style="width:100%;height:auto;color:var(--fg)">'+g+'</svg><div class="cht">Name antippen zum Hervorheben</div><div class="lgs">'+lg+'</div></div>';
+  return '<div class="chart"><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Punkteverlauf" style="width:100%;height:auto;color:var(--fg)">'+g+'</svg>'+(only!=null?'':'<div class="cht">Name antippen zum Hervorheben</div><div class="lgs">'+lg+'</div>')+'</div>';
 }
-function statsHtml(T){
+function statsHtml(T,only){
   var k=T.rounds.length;if(!k)return '<div class="note">Noch keine Runde gespielt.</div>';
   var tot=totals(T,k),rk=ranks(tot),sg=function(n){return (n>0?"+":"")+n},MED=["🥇","🥈","🥉"];
   var P=T.names.map(function(nm,i){
@@ -1315,10 +1351,11 @@ function statsHtml(T){
     T.rounds.forEach(function(R,ri){var e=Math.max(0,R.b[i]+(R.a?R.a[i]||0:0)),p=rp(R,i);if(e===R.t[i]){hit++;st++;if(st>ms)ms=st}else st=0;df+=e-R.t[i];if(p>best){best=p;bi=ri+1}if(p<worst){worst=p;wi=ri+1}ps.push(p)});
     return {i:i,nm:nm,hit:hit,df:df,best:best,bi:bi,worst:worst,wi:wi,ms:ms,ps:ps};
   });
+  if(only!=null)P=P.filter(function(x){return x.i===only});
   var gm=1;P.forEach(function(x){x.ps.forEach(function(p){gm=Math.max(gm,Math.abs(p))})});
   var top=function(f){var b=P[0];P.forEach(function(x){if(f(x)>f(b))b=x});return b};
   var th=top(function(x){return x.hit}),ts=top(function(x){return x.ms}),tb=top(function(x){return x.best});
-  var hl='<div class="sth2"><div><small>🎯 Treffsicherste</small><b>'+esc(th.nm)+'</b><small>'+Math.round(th.hit*100/k)+' %</small></div><div><small>🔥 Längste Serie</small><b>'+esc(ts.nm)+'</b><small>'+ts.ms+' Runden</small></div><div><small>💥 Beste Runde</small><b>'+esc(tb.nm)+'</b><small>'+sg(tb.best)+' (R'+tb.bi+')</small></div></div>';
+  var hl=only!=null?'':'<div class="sth2"><div><small>🎯 Treffsicherste</small><b>'+esc(th.nm)+'</b><small>'+Math.round(th.hit*100/k)+' %</small></div><div><small>🔥 Längste Serie</small><b>'+esc(ts.nm)+'</b><small>'+ts.ms+' Runden</small></div><div><small>💥 Beste Runde</small><b>'+esc(tb.nm)+'</b><small>'+sg(tb.best)+' (R'+tb.bi+')</small></div></div>';
   var order=P.slice().sort(function(a,b){return tot[b.i]-tot[a.i]||a.i-b.i});
   return '<div class="scroll">'+hl+order.map(function(x){
     var i=x.i,av=x.df/k,pc=Math.round(x.hit*100/k),bw=300/k;
@@ -1368,9 +1405,12 @@ function doPromo(el){
 }
 function sumUpdate(){
   if(!cur||cur.mode!=="entry")return;
-  var T=S[cur.key],r=rcards(cur.key),D=draft[cur.key],s=0;
-  var bs=0;T.names.forEach(function(_,i){s+=D["t"+i]||0;bs+=D["b"+i]||0});
-  var okb=bs!==r,need=r,okt=s<=need,el=$("sum");el.innerHTML="Ansagen: "+bs+(okb?" ✓":" ✗ darf nicht "+r+" sein")+"<br>Stiche: "+s+(okt?" ✓":"");el.className="sum "+(okb&&okt?"ok":"bad");$("sv").disabled=!(okb&&okt);
+  var T=S[cur.key],r=rcards(cur.key),D=draft[cur.key],n=T.names.length,s=0,bs=0,oth=0,o=bidOrder(T,r);
+  T.names.forEach(function(_,i){s+=D["t"+i]||0;bs+=D["b"+i]||0});
+  o.slice(0,n-1).forEach(function(i){oth+=D["b"+i]||0});
+  var okb=bs!==r,jb=T.mode==="j",wo=jb&&T.rainbow!==false,lo=jb?Math.max(0,r-1):r,hi=r+(wo?1:0),okt=s>=lo&&s<=hi,el=$("sum");
+  el.innerHTML="Ansagen: "+bs+" / "+r+(okb?" ✓":" ✗")+"<br>Stiche: "+s+(okt?"":" ✗");
+  el.className="sum "+(okb&&okt?"ok":"bad");$("sv").disabled=!(okb&&okt);
 }
 var wheelRot=0,wheelKey=null,wheelBusy=false,WCOL=["#5b3fd0","#8a4fff","#2b5fd9","#b23ad6","#d9a21e","#1ea896","#d6457a","#3b82f6"];
 function wheelSvg(names){
@@ -1433,8 +1473,8 @@ document.addEventListener("click",function(e){
   if(c&&cur){var D0=draft[cur.key],w=parseInt(el.getAttribute("data-v"),10),v0=(D0[c]||0)===w?0:w;adj(cur.key,parseInt(c.slice(1),10),function(){D0[c]=v0});[].forEach.call(el.parentNode.querySelectorAll(".rbw"),function(x){x.classList.toggle("on",parseInt(x.getAttribute("data-v"),10)===v0)});sumUpdate();return}
   var sd=el.getAttribute("data-s");
   if(sd&&cur){var Dk=draft[cur.key],pi=parseInt(el.getAttribute("data-p"),10),mx=rcards(cur.key),nt=nxt(Dk,pi,sd==="o"?0:sd==="m"?-1:1);
-    if(nt<0||nt>mx)return;
-    Dk["t"+pi]=nt;Dk["k"+pi]=sd==="o"?"":sd;Dk["s"+pi]=1;paint(cur.key,pi);var vt=$("v-t"+pi);vt.classList.remove("pp");void vt.offsetWidth;vt.classList.add("pp");sumUpdate();return}
+    if(nt<0||nt>tcap(cur.key))return;
+    Dk["t"+pi]=nt;Dk["k"+pi]=sd==="o"?"":sd;Dk["s"+pi]=1;S[cur.key].names.forEach(function(_,j){paint(cur.key,j)});var vt=$("v-t"+pi);vt.classList.remove("pp");void vt.offsetWidth;vt.classList.add("pp");sumUpdate();return}
   if(a==="mode"){[].forEach.call(el.parentNode.children,function(x){x.classList.remove("on")});el.classList.add("on");var rr=el.closest(".body");rr=rr&&rr.querySelector(".rbrow");if(rr)rr.style.display=el.getAttribute("data-m")==="j"?"block":"none";return}
   if(a==="wheel"){openWheel(el.getAttribute("data-k"));return}
   if(a==="wspin"){spinWheel();return}
@@ -1442,15 +1482,15 @@ document.addEventListener("click",function(e){
   if(a==="rbt"){var on=el.classList.toggle("on");el.textContent=on?"🌈 Regenbogen: an":"🌈 Regenbogen: aus";return}
   if(i&&cur){
     var T=S[cur.key],max=rcards(cur.key),D=draft[cur.key],ix2=parseInt(i.slice(1),10);
-    var v=Math.max(0,Math.min(max,(D[i]||0)+parseInt(el.getAttribute("data-d"),10)));
-    if(i.charAt(0)==="t"){var tt=0;T.names.forEach(function(_,q){tt+=(q===ix2?v:(D["t"+q]||0))});if(tt>max)return;D[i]=v;D["k"+ix2]="";D["s"+ix2]=1;paint(cur.key,ix2)}
+    var v=Math.max(0,Math.min(i.charAt(0)==="t"?tcap(cur.key):max,(D[i]||0)+parseInt(el.getAttribute("data-d"),10)));
+    if(i.charAt(0)==="t"){var tt=0;T.names.forEach(function(_,q){tt+=(q===ix2?v:(D["t"+q]||0))});D[i]=v;D["k"+ix2]="";D["s"+ix2]=1;T.names.forEach(function(_,j){paint(cur.key,j)})}
     else adj(cur.key,ix2,function(){D[i]=v});
     var vb=$("v-"+i);vb.classList.remove("pp");void vb.offsetWidth;vb.classList.add("pp");sumUpdate();return;
   }
   if((a==="chip"||a==="addn"||a==="wheel"||a==="rbt"||a==="mode")&&role!==(el.getAttribute("data-k")||(el.closest("#lg-cl")?"cl":el.closest("#lg-kl")?"kl":""))){toast("Nur der Schreiber dieses Tisches kann das");return}
   if(a==="chip"){var ck=el.getAttribute("data-k"),cn=el.getAttribute("data-n"),ix=sel[ck].indexOf(cn);
-    if(ix>=0){sel[ck].splice(ix,1);el.classList.remove("on")}else{if(sel[ck].length>=6){toast("Maximal 6 Spieler");return}sel[ck].push(cn);el.classList.add("on")}
-    setupCount(ck);return}
+    if(ix>=0){sel[ck].splice(ix,1)}else{if(sel[ck].length>=6){toast("Maximal 6 Spieler");return}sel[ck].push(cn)}
+    renderChips(ck);setupCount(ck);return}
   if(a==="addn"){addName(el.getAttribute("data-k"),el.parentNode.querySelector(".nn"));return}
   if(a==="setrole"){setRole(el.getAttribute("data-r"));return}
   if(a==="role"){openRole();return}
@@ -1467,11 +1507,13 @@ document.addEventListener("click",function(e){
   if(a==="csave"&&cur&&cur.mode==="cell"){var cT=S[cur.key],cR=cT.rounds[cur.ri];if(role!==cur.key||!cR)return;cR.t[cur.ci]=cur.v;var ckk=cur.key,cri=cur.ri;save();update(ckk);openSheet("hist",ckk);toast("Runde "+(cri+1)+": Stiche geändert ✓");return}
   if(a==="chl"){var ch=el.closest(".chart"),hh=el.getAttribute("data-h");if(!ch)return;if(ch.getAttribute("data-hl")===hh){ch.removeAttribute("data-hl");el.classList.remove("on")}else{ch.setAttribute("data-hl",hh);[].forEach.call(ch.querySelectorAll(".lgi"),function(x){x.classList.toggle("on",x===el)})}return}
   if(a==="png"){saveBlock(el.getAttribute("data-k"));return}
+  if(a==="pvw"){var pk=el.getAttribute("data-k"),pi2=parseInt(el.getAttribute("data-pi"),10);if(S[pk]&&S[pk].names[pi2]!==undefined)openPlayer(pk,pi2,el.getAttribute("data-v"));return}
+  if(a==="svw"){var sk=el.getAttribute("data-k");sv[sk]=el.getAttribute("data-v");openSheet("stat",sk);return}
   if(a==="vw"){var vk=el.getAttribute("data-k");hv[vk]=el.getAttribute("data-v");openSheet("hist",vk);return}
   if(a==="edr"){var ek=el.getAttribute("data-k");if(role!==ek)return;openSheet("entry",ek,parseInt(el.getAttribute("data-ri"),10));return}
   if(a==="promo"){doPromo(el);return}
   if(a==="blk"){var bk=el.getAttribute("data-k");hv[bk]=hv[bk]==="block"?"list":"block";openSheet("hist",bk);return}
-  if(a==="entry"||a==="hist")openSheet(a,el.getAttribute("data-k"));
+  if(a==="entry"||a==="hist"||a==="stat")openSheet(a,el.getAttribute("data-k"));
   else if(a==="close")closeSheet();
   else if(a==="save"&&cur){
     var key=cur.key,T2=S[key],n=T2.names.length,b=[],t=[],D2=draft[key];
@@ -1514,6 +1556,9 @@ if(window.claude&&claude.use){
       }catch(e){}
     },function(){});
   }).catch(function(){});
-}
+}else if(syncBase){
+  pullRemote();setInterval(pullRemote,3000);
+  document.addEventListener("visibilitychange",function(){if(!document.hidden)pullRemote()});
+}else setSync(false,"nur lokal");
 })();
 </script></body></html>
