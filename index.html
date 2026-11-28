@@ -1034,7 +1034,7 @@ function nr(T){return Math.floor(60/T.names.length)+(T.mode==="j"?1:0)}
 function rbl(v){return v===1?"🌈 +1":v===-1?"🌈 −1":"🌈 aus"}
 function totals(T,k){return T.names.map(function(_,i){var s=0;for(var r=0;r<k;r++)s+=rp(T.rounds[r],i);return s})}
 function ranks(t){return t.map(function(x){return 1+t.filter(function(y){return y>x}).length})}
-var SYNC_URL=""; /* HIER die Firebase-Realtime-Database-URL eintragen, z.B. "https://wizard-liga-default-rtdb.europe-west1.firebasedatabase.app" */
+var SYNC_URL="https://wizard-liga-default-rtdb.europe-west1.firebasedatabase.app"; /* HIER die Firebase-Realtime-Database-URL eintragen, z.B. "https://wizard-liga-default-rtdb.europe-west1.firebasedatabase.app" */
 var syncBase=(SYNC_URL||"").replace(/\/+$/,""),pushT=0;
 function setSync(ok,txt){var e=$("sync");if(!e)return;e.classList.add("live");e.textContent="live"}
 function pushRemote(){
